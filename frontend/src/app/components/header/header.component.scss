@@ -1,0 +1,60 @@
+
+ ul {
+    list-style: none;
+    padding:0;
+    margin:0;
+  }
+  
+  a {
+    text-decoration: none;
+    color:white;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  ul {
+    display: flex;
+  }
+  
+  .sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 10;
+  }
+  
+  mat-toolbar {
+    background-color: rgba(197, 59, 59, 0.863);
+  }
+  
+  .btn-selected {
+    color: rgba(196, 69, 60, 0.932);
+    background-color: rgba(255, 244, 180, 0.911);
+  }
+  
+  .btn-menu {
+    color: white;
+  }
+  
+  .logo {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    width: 200px;
+  }
+  
+  .menu-dots {
+    width: 40px;
+    color: rgba(255, 255, 255, 0.932);
+  }
+  
+  .sticky {
+      --default-height: 64px;
+      top: 0;
+      height: var(--default-height);
+    }
+ 
+    
+  
+    

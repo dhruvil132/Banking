@@ -1,0 +1,59 @@
+<p-blockUI [blocked]="isLoading">
+  <i class="pi pi-spin pi-spinner"
+    style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+</p-blockUI>
+
+<!-- <p-messages></p-messages> -->
+
+<mat-card layout='row'>
+  <!-- <img class="logo-login" src="../../assets/images/bank.png" alt=""> -->
+  <!-- <mat-card-title class="logo-name" >E-bank</mat-card-title> -->
+  <p></p>
+  <mat-card-title class="login-title">Log in to E-Bank</mat-card-title>
+  <span class="login-link">Not registered? <a  routerLink="/registration">Create Account</a></span>
+  <mat-card-content>
+<form (submit)="onLogin(loginForm)" #loginForm="ngForm"  *ngIf="!isLoading">
+  <p>
+  <mat-form-field>
+        <input
+         
+          matInput
+          ngModel
+          #emailInput="ngModel"
+          type="email"
+          name="email"
+          placeholder="E-mail"
+          required email
+          >
+          <mat-error *ngIf="emailInput.invalid">Please enter valid email address.</mat-error>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field class="password_box">
+        <div class="input-with-icon">
+          <input
+            matInput
+            ngModel
+            #passwordInput="ngModel"
+            type="{{ hidePassword ? 'password' : 'text' }}"
+            name="password"
+            placeholder="Password"
+            required
+          />
+            <button style="margin-left: 2px;" (click)="togglePasswordVisibility()"  pButton pRipple type="button"  class="p-button-rounded p-button-info p-button-text ">{{hidePassword ? 'Show' : 'Hide'}}</button>  
+          </div>
+        <mat-error *ngIf="passwordInput.invalid">Please enter a password.</mat-error>
+      </mat-form-field>
+    </p>
+    <p>
+        <span style="float: right;"><a  routerLink="/reset-password">Forgot your password?</a></span>
+    </p>
+    <div>
+      <div class="button-container">
+        <button mat-raised-button style="background-color: rgba(218, 17, 17, 0.622);
+        margin-top: 25px;" type="submit" *ngIf="!isLoading">Log in</button>
+      </div>
+    </div>
+</form>
+</mat-card-content>
+</mat-card>

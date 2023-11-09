@@ -1,0 +1,42 @@
+<p-blockUI [blocked]="isLoading">
+    <i class="pi pi-spin pi-spinner"
+      style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+  </p-blockUI>
+    
+  <p-toast position="top-right" life="5000"></p-toast>
+
+  <div style="margin: 25px;">
+    <span style="font-size: 30px;
+    font-weight: 400;">Settings</span>
+
+<div style="margin: 25px;">
+    <div  style="padding-bottom: 10px;line-height: 1.2;color: #000;" [style.fontSize]="selectedFontSize" 
+    [style.color]="selectedContrast">
+        <div  style="border:1px solid gray;">
+        <p style="padding: 10px;">Once upon a time, there was a Greek King, Midas.
+            He was very rich and had lots of Gold. He had a daughter, who he loved a lot.
+            One day, Midas found an angel in need of help. He helped her and in return she agreed to grant a wish.
+            Midas wished that everything he touched would turn into gold. His wish was granted
+            On his way home, he touched rocks and plants and they turned into gold.
+            As he reached home, in excitement he hugged his daughter, who turned into gold.
+            Midas was devastated and he had learnt his lesson. Upon learning his lesson, Midas asked the angel to take his wish away.</p>
+    </div>
+      </div>
+
+      <p> Your selected values from below will reflect in the above box. Once you save your changes it will reflect in entire application.</p>
+   <div>
+    <label style="margin-right: 25px;">Select Font Size:</label>
+    <p-dropdown [options]="fontOptions" placeholder="Select Size" [(ngModel)]="selectedFontSize"  optionLabel="name" optionValue="value"></p-dropdown>
+   </div>
+
+   <div style="margin-top: 15px;">
+    <label style="margin-right: 25px;">Select Contrast:</label>
+    <p-dropdown [options]="contrastOptions" placeholder="Select Contrast" [(ngModel)]="selectedContrast"  optionLabel="name" optionValue="value"></p-dropdown>
+
+   </div>
+    <div class="button-container">
+        <button   mat-raised-button style="background-color: rgba(218, 17, 17, 0.622);
+        margin-top: 15px;" (click)="submitSettings()">Submit Changes</button>
+      </div>
+</div>
+

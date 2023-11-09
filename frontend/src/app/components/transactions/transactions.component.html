@@ -1,0 +1,130 @@
+<p-blockUI [blocked]="isLoading">
+    <i class="pi pi-spin pi-spinner"
+      style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+  </p-blockUI>
+    
+  <p-toast position="top-right" life="5000"></p-toast>
+
+  <div style="margin: 25px;">
+    <span style="font-size: 30px;
+    font-weight: 400;">Your Statements</span>
+
+<div style="margin-top: 15px;" *ngIf="noAccountFound">
+    <span>You have not added your bank account. Please add a bank account to use e-banking services</span>
+</div>
+
+</div>
+
+<div style="margin: 25px;" *ngIf="accounts?.length > 1">
+    <span>You have multiple account added. You can view transactions of the account by selecting one from below list.</span>
+  </div>
+
+  <div *ngIf="accounts?.length > 1" style="margin: 25px;">
+    <label style="margin-right: 25px;" for="fontSizeSelect">Select Account:</label>
+    <p-dropdown id="fontSizeSelect" [options]="accountOptions" placeholder="Select Account" [(ngModel)]="selectedAccount" 
+    (onChange)="getTransactions()" 
+    optionLabel="label" optionValue="value"
+    ></p-dropdown>
+  </div>
+
+  <div class="card" *ngIf="!noAccountFound">
+    <div style="margin: 25px;padding-bottom: 25px;">
+  <p-toolbar styleClass="p-mb-4">
+  
+      <div style="margin-top: 5px;margin-bottom: 5px;">
+        <p-dropdown  [style]="{'minWidth':'20%'}"
+        [options]="listoftimerange"
+        [(ngModel)]="selectedtimerange"
+        optionLabel="drpValue" optionValue="drpKey"
+        [showClear]="true"
+        (onChange)='typeChange()'
+        placeholder="Select a Range"></p-dropdown>
+
+        <p-calendar [(ngModel)]="selectedrangedates" *ngIf="displayDateRangeTextbox"
+        selectionMode="range" [readonlyInput]="true" inputId="range" [style]="{'margin-left':'15px'}"
+        placeholder="Select a Date Range"  (onSelect)='getTransactionWithDateRange()'></p-calendar>
+
+        <button  *ngIf="filterTransactionsList.length > 0" mat-raised-button style="background-color: green;
+        margin-left: 15px;" (click)="verifyUserDialog = true">Download</button>
+
+      </div>
+      </p-toolbar>
+      <p-table #dt [value]="filterTransactionsList" dataKey="id"
+        [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="isLoading"  [sortOrder]="-1" [columns]="cols"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" exportFilename="Bank-Statements">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Debits/Credits </th>
+                <th pSortableColumn="amount">Amount <p-sortIcon field="amount"></p-sortIcon></th>
+                <th>Current Balance</th>
+                <th>Payment Mode</th>
+                <th pSortableColumn="transactionDate">Transaction Date  <p-sortIcon field="transactionDate"></p-sortIcon></th>
+                <th>Send To</th>
+                <th>Send To Account</th>
+                <th>Received From Account</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-transaction>
+            <tr>
+                <td>
+                  <p class="credit-debit-badge" [ngClass]="{'debit-status ': transaction.senderAccountId == transaction.accountId, 'credit-status': transaction.senderAccountId != transaction.accountId}">
+                    {{ transaction.senderAccountId == transaction.accountId ? 'Debit' : 'Credit' }}
+                  </p>
+                </td>
+                <td>
+                  <p [ngClass]="{'debit': transaction.senderAccountId == transaction.accountId, 'credit': transaction.senderAccountId != transaction.accountId}">
+                    {{transaction.senderAccountId == transaction.accountId  ? '-' : '+'}}{{transaction.amount | currency: "USD"}}
+                  </p>
+                </td>
+                <td>
+                  {{transaction.currentBalance | currency: "USD"}}
+                </td>
+                <td>
+                  {{transaction.senderAccountId == transaction.accountId  ? transaction.paymentMethodType : ''}}
+  
+                </td>
+                <td>
+                  {{transaction.transactionDate | date:'dd MMMM yyyy'}}
+                </td>
+                <td>
+                  {{ transaction.senderAccountId == transaction.accountId && transaction.receiverAccountId != transaction.accountId ? transaction.receiverName : ''}}
+                </td>
+                <td>
+                  {{ transaction.senderAccountId == transaction.accountId && transaction.receiverAccountId != transaction.accountId ? transaction.receiverAccountNumber : ''}}
+                </td>
+                <td>              
+                  {{ transaction.receiverAccountId == transaction.accountId && transaction.senderAccountId != transaction.accountId ? transaction.senderAccountNumber : ''}}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6">No transactions found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>
+  </div>
+
+
+  <p-dialog header="Verufy User" [(visible)]="verifyUserDialog" [style]="{width: '50vw'}" [closable]="false" [modal]="true">
+    <ng-template pTemplate="header">
+        <b>Your security is important to us.</b>
+    </ng-template>
+    <p>Please enter your registered password below to download your statements</p>
+        <div class="form-group form-input-margins">
+          <div class="input-with-icon" style="display: flex;">
+          <input type="{{ hidePassword ? 'password' : 'text' }}" 
+           [(ngModel)]="enteredPasswordForVerification" class="form-control" pInputText style="width: 80%;" required />
+           <button style="margin-left: 2px;" (click)="togglePasswordVisibility()"  pButton pRipple type="button"  class="p-button-rounded p-button-info p-button-text ">{{hidePassword ? 'Show' : 'Hide'}}</button>  
+        </div>
+        </div>
+      <ng-template pTemplate="footer">
+        <div class="text-center">
+            <button mat-raised-button style="background-color: rgba(218, 17, 17, 0.622);
+            margin-top: 15px;" (click)="verifyUser()">Submit</button>
+            <button mat-raised-button style="background-color: white;margin-left: 15px;
+            margin-top: 15px;" (click)="cancelExport()">Cancel</button>
+          </div>    
+        </ng-template>
+  </p-dialog>

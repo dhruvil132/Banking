@@ -1,0 +1,21 @@
+<mat-toolbar class="sticky">
+    <span>
+    </span>
+    <span class="spacer"></span>
+    <ul>
+      <li>
+          <span style="margin-right: 25px;font-size: 18px;" class="btn-menu user-header" *ngIf="userIsAuthenticated"> Welcome, {{user.name + " " + user.surname}}</span>
+        </li>
+
+
+    <li>
+
+          <a style="color: white;" class="btn-menu" mat-button (click)="onLogout()" *ngIf="userIsAuthenticated" routerLinkActive="btn-selected">Log Out</a>
+
+    </li>
+  </ul>
+  </mat-toolbar>
+  
+
+ 
+  

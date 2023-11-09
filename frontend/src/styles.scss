@@ -1,0 +1,53 @@
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+.mat-typography p {
+  margin: 0 0 8px;
+}
+
+.help-block {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: #ca1616;
+}
+.form-input-margins{
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.mt-5{
+  margin-top: 5px;
+}
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+ }
+
+ body::-webkit-scrollbar {
+  width: 0 !important;
+ }
+
+ .hover-button:hover {
+  color: black !important;
+}
+ .help-text{
+  color: gray;
+}
+
+.bg {
+  background-image: url("http://localhost:3000/repository/images/bg2.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(255, 255, 0, 0.589);
+  color: black;
+  text-shadow: none;
+}

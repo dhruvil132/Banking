@@ -1,0 +1,30 @@
+.debit {
+    color: red;
+  }
+  
+.credit {
+    color: green;
+  }
+
+
+  .debit-status{
+    background-color: #ffcdd2;
+    color: #c63737;
+}  
+
+.credit-status{
+    background-color: #c8e6c9;
+    color: #256029;
+}  
+
+.credit-debit-badge {
+    border-radius: 2px;
+    padding: .25em .5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: .3px;
+    width: 80px;
+    align-items: center;
+    display: block;
+    text-align: center;
+}

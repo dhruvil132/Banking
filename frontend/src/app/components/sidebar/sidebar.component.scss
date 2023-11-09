@@ -1,0 +1,54 @@
+/*
+    Side menu
+    */
+    .sticky-side-menu {
+      --default-height: 70px;
+      top: 0;
+      height: var(--default-height);
+    }
+
+    .mat-drawer-container {
+        width: 233px;
+        height: 570px;
+    }
+    
+    .menu-color {
+      color: goldenrod;
+      padding-right: 8px;
+    }
+    
+    .mat-list-item {
+      color:maroon;
+    }
+    
+    .mat-nav-list {
+      color:maroon;
+    }
+    
+    .mat-list-base .mat-list-option .mat-list-item-content {
+      padding: 0px 24px;
+    }
+    
+    .hr-bottom {
+      color:rgba(128, 0, 0, 0.623);
+    }
+    
+    .menu-list-item-selected {
+      color: rgba(196, 69, 60, 0.932);
+      background-color: rgba(255, 244, 180, 0.911);    
+    }
+    
+    .maroon {
+      color: maroon;
+    }
+    
+    .user-header {
+      position: relative;
+      left: 5px;
+      top: 2px;
+      padding: 0px;
+    }
+
+    a mat-icon {
+      font-size:25px;
+   }

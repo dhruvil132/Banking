@@ -1,0 +1,182 @@
+<p-blockUI [blocked]="isLoading">
+    <i class="pi pi-spin pi-spinner"
+      style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+  </p-blockUI>
+    
+  <p-toast position="top-right" life="5000"></p-toast>
+
+  <div style="margin: 25px;">
+    <span style="font-size: 30px;
+    font-weight: 400;">Your Accounts</span>
+
+
+<div style="margin-top: 25px;">
+  <div class="row">
+    <div *ngFor="let account of accounts" class="account-box col-md-5" style="margin-right: 70px;">
+      <div style="margin: 15px;">
+        <span class="account-box-header" >Account Holder Name : {{account.accountHolderName}} </span>
+        <a (click)="openEditDialog(account)" style="color: blue;cursor: pointer;float: right;">Edit</a>
+    </div>
+    <div style="margin: 15px;">
+      <span class="account-box-header" >Bank State Branch : {{account.bsbNumber}} </span>
+  </div>
+  <div style="margin: 15px;">
+    <span class="account-box-header" >Account Type : {{getAccountType(account.accountType)}} </span>
+</div>
+      <div style="margin: 10px;">
+          <span class="account-box-header" >Account Number : {{account.maskAccountNumber}}</span>
+          <a style="margin-left: 10px;vertical-align: middle;cursor: pointer;" (click)="toggleAccountVisibility(account)"  pButton pRipple type="button"  class="p-button-rounded p-button-info p-button-text ">{{account.maskAccountNumber.includes('*') ? 'View ' : 'Hide '}}</a>  
+      </div>
+    <div style="margin: 10px;">
+      <span class="account-box-header" >Current Balance : {{ account.maskCurrentBalance ? '******' : account.currentBalance | currency}}</span>
+      <a style="margin-left: 10px;vertical-align: middle;cursor: pointer;" (click)="toggleAmountVisibility(account)"  pButton pRipple type="button"  class="p-button-rounded p-button-info p-button-text ">{{account.maskCurrentBalance ? 'View ' : 'Hide '}}</a>  
+  </div>
+
+  </div>
+  </div>
+ 
+</div>
+<div style="margin-top: 15px;" *ngIf="noAccountFound">
+    <span>You have not added your bank account. Please add a bank account to use e-banking services</span>
+</div>
+
+<div class="button-container" *ngIf="!showForm">
+    <button  *ngIf="noAccountFound" mat-raised-button style="background-color: rgba(218, 17, 17, 0.622);
+    margin-top: 15px;" (click)="showForm = true;">Add Account</button>
+    <button  *ngIf="!noAccountFound" mat-raised-button style="background-color: rgba(218, 17, 17, 0.622);
+       margin-top: 15px;" (click)="showForm = true;">Add Another Account</button>
+  </div>
+</div>
+
+<div *ngIf="showForm" style="margin: 25px;">
+  <form novalidate [formGroup]="accountAddForm">
+    <p-message *ngIf="error" severity="error" [text]="message" [escape]="true"></p-message>
+
+    <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;">
+      <label style="margin-right: 25px;">Account Holder Name: </label>
+      <input type="text"
+      [(ngModel)]="accountDetails.accountHolderName" pInputText formControlName="accountHolderName"
+      placeholder="Account Holder Name" />      
+    <span class="help-block" *ngIf="(accountAddForm.get('accountHolderName').touched ||
+    accountAddForm.get('accountHolderName').dirty) &&
+    accountAddForm.get('accountHolderName').errors">
+    <span *ngIf="accountAddForm.get('accountHolderName').errors">
+      Please enter valid name.      </span>         
+  </span>
+    </div>
+  
+    <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;">
+      <label style="margin-right: 25px;">Account Number: </label>
+      <p-inputMask mask="999999999" [(ngModel)]="accountDetails.accountNumber" 
+      placeholder="999999999" formControlName="accountNumber"></p-inputMask>
+         <span class="help-block" *ngIf="(accountAddForm.get('accountNumber').touched ||
+         accountAddForm.get('accountNumber').dirty) &&
+         accountAddForm.get('accountNumber').errors">
+         <span *ngIf="accountAddForm.get('accountNumber').errors">
+            Account Number should be 9 digits in length. Please verify again.          </span>         
+       </span>
+      </div>
+      <div>
+        <label style="margin-right: 25px;">Account Type: </label>
+        <p-dropdown class="form-group form-input-margins"  [options]="accountTypeOptions" placeholder="Select Account Type" [(ngModel)]="accountDetails.accountType" 
+        optionLabel="label" optionValue="value" formControlName="accountType"
+        ></p-dropdown>
+        <span class="help-block" *ngIf="(accountAddForm.get('accountType').touched ||
+        accountAddForm.get('accountType').dirty) &&
+        accountAddForm.get('accountType').errors">
+        <span *ngIf="accountAddForm.get('accountType').errors">
+         Account Type is a mandatory field.
+        </span>         
+      </span>
+      </div>
+      <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;">
+        <label style="margin-right: 25px;">Bank State Branch Number: </label>
+
+            <p-inputMask mask="999-999" [(ngModel)]="accountDetails.bsbNumber" placeholder="999-999" formControlName="bsb"></p-inputMask>
+
+      <span class="help-block" *ngIf="(accountAddForm.get('bsb').touched ||
+      accountAddForm.get('bsb').dirty) &&
+      accountAddForm.get('bsb').errors">
+      <span *ngIf="accountAddForm.get('bsb').errors">
+        Bank State Branch is a mandatory field.
+      </span>         
+    </span>
+      </div>
+        <div >
+          <button mat-raised-button style="background-color: rgba(218, 17, 17, 0.622);
+          margin-top: 15px;" (click)="AddAccount()">Add Account</button>
+          <button mat-raised-button style="background-color: white;margin-left: 15px;
+          margin-top: 15px;" (click)="cancelAddingAccount()">Cancel</button>
+        </div>
+
+  </form>
+</div>
+
+
+<p-dialog header="Edit" [(visible)]="editDialog" [style]="{width: '50vw'}" [closable]="false" [modal]="true">
+  <ng-template pTemplate="header">
+      Edit Account 
+  </ng-template>
+  <form novalidate [formGroup]="accountUpdateForm">
+    <p-message *ngIf="error" severity="error" [text]="message" [escape]="true"></p-message>
+
+    <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;">
+      <label style="margin-right: 25px;">Account Holder Name: </label>
+      <input type="text"
+      [(ngModel)]="editAccount.accountHolderName" pInputText formControlName="accountHolderName"
+      placeholder="Account Holder Name" />      
+    <span class="help-block" *ngIf="(accountUpdateForm.get('accountHolderName').touched ||
+    accountUpdateForm.get('accountHolderName').dirty) &&
+    accountUpdateForm.get('accountHolderName').errors">
+    <span *ngIf="accountUpdateForm.get('accountHolderName').errors">
+      Please enter valid name.      </span>         
+  </span>
+    </div>
+  
+    <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;">
+      <label style="margin-right: 25px;">Account Number: </label>
+      <p-inputMask mask="999999999" [(ngModel)]="editAccount.accountNumber" 
+      placeholder="999999999" formControlName="accountNumber"></p-inputMask>
+         <span class="help-block" *ngIf="(accountUpdateForm.get('accountNumber').touched ||
+         accountUpdateForm.get('accountNumber').dirty) &&
+         accountUpdateForm.get('accountNumber').errors">
+         <span *ngIf="accountUpdateForm.get('accountNumber').errors">
+            Account Number should be 9 digits in length. Please verify again.          </span>         
+       </span>
+      </div>
+      <div>
+        <label style="margin-right: 25px;">Account Type: </label>
+        <p-dropdown class="form-group form-input-margins"  [options]="accountTypeOptions" placeholder="Select Account Type" [(ngModel)]="editAccount.accountType" 
+        optionLabel="label" optionValue="value" formControlName="accountType"
+        ></p-dropdown>
+        <span class="help-block" *ngIf="(accountAddForm.get('accountType').touched ||
+        accountAddForm.get('accountType').dirty) &&
+        accountAddForm.get('accountType').errors">
+        <span *ngIf="accountAddForm.get('accountType').errors">
+         Account Type is a mandatory field.
+        </span>         
+      </span>
+      </div>
+      <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;">
+        <label style="margin-right: 25px;">Bank State Branch Number: </label>
+
+            <p-inputMask mask="999-999" [(ngModel)]="editAccount.bsbNumber" placeholder="999-999" formControlName="bsb"></p-inputMask>
+
+      <span class="help-block" *ngIf="(accountUpdateForm.get('bsb').touched ||
+      accountUpdateForm.get('bsb').dirty) &&
+      accountUpdateForm.get('bsb').errors">
+      <span *ngIf="accountUpdateForm.get('bsb').errors">
+        Bank State Branch is a mandatory field.
+      </span>         
+    </span>
+      </div>
+  </form>
+    <ng-template pTemplate="footer">
+      <div class="text-center">
+          <button mat-raised-button style="background-color: rgba(218, 17, 17, 0.622);
+          margin-top: 15px;" (click)="updateAccount()">Update Account</button>
+          <button mat-raised-button style="background-color: white;margin-left: 15px;
+          margin-top: 15px;" (click)="editDialog = false;">Cancel</button>
+        </div>    
+      </ng-template>
+</p-dialog>

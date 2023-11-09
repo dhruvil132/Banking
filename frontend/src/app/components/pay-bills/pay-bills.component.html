@@ -1,0 +1,47 @@
+<p-blockUI [blocked]="isLoading">
+    <i class="pi pi-spin pi-spinner"
+      style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+  </p-blockUI>
+    
+  <p-toast position="top-right" life="5000"></p-toast>
+
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+  <div style="margin: 25px;">
+    <span style="font-size: 30px;
+    font-weight: 400;">Pay Bills</span>
+
+<div style="margin-top: 15px;" *ngIf="noAccountFound">
+  <span>You have not added your bank account. Please add a bank account to use e-banking services</span>
+</div>
+
+<div style="margin-bottom: 35px;margin-top: 15px;" *ngIf="accounts?.length > 1">
+  <span >You have multiple account added. The payment of bills will be done from the below selected account.</span>
+</div>
+
+<div *ngIf="accounts?.length > 1" style="margin: 25px;">
+  <label style="margin-right: 25px;" for="fontSizeSelect">Select Account:</label>
+  <p-dropdown id="fontSizeSelect" [options]="accountOptions" placeholder="Select Account" [(ngModel)]="selectedAccount" 
+  optionLabel="label" optionValue="value"
+  ></p-dropdown>
+</div>
+
+<div style="margin: 25px;" *ngIf="accounts?.length > 0">
+   <div>
+    <label style="margin-right: 25px;">Select Bill:</label>
+    <p-dropdown [options]="paymentOptions" placeholder="Select Payment Bill" [(ngModel)]="selectedPaymentOption"  optionLabel="name" optionValue="value"
+     ></p-dropdown>
+   </div>
+
+    <div style="margin-top: 25px;" >
+     <label style="margin-right: 25px;">Amount:</label>
+     <p-inputNumber [(ngModel)]="amount" mode="decimal" [minFractionDigits]="2" placeholder="Amount"
+     [maxFractionDigits]="2" ></p-inputNumber>
+    </div>
+    <div class="button-container">
+        <button   mat-raised-button style="background-color: rgba(218, 17, 17, 0.622);
+        margin-top: 25px;" (click)="makePayment()">Make Payment</button>
+      </div>
+</div>
+
+</div>

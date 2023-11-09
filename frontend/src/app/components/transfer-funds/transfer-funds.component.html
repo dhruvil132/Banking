@@ -1,0 +1,157 @@
+<p-blockUI [blocked]="isLoading">
+    <i class="pi pi-spin pi-spinner"
+      style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+  </p-blockUI>
+    
+  <p-toast position="top-right" life="5000"></p-toast>
+
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+  <div style="margin: 25px;">
+    <span style="font-size: 30px;
+    font-weight: 400;">Transfer Funds</span>
+
+<div style="margin-top: 15px;" *ngIf="noAccountFound">
+    <span>You have not added your bank account. Please add a bank account to use e-banking services</span>
+</div>
+
+<div style="margin-bottom: 35px;margin-top: 15px;" *ngIf="accounts?.length > 1">
+    <span >You have multiple account added. The transfer of funds will be done from the below selected account.</span>
+  </div>
+
+  <div *ngIf="accounts?.length > 1" style="margin: 25px;">
+    <label style="margin-right: 25px;" for="fontSizeSelect">Select Account:</label>
+    <p-dropdown id="fontSizeSelect" [options]="accountOptions" placeholder="Select Account" [(ngModel)]="selectedAccount" 
+    optionLabel="label" optionValue="value"  (onChange)="onAccountChange()" 
+    ></p-dropdown>
+  </div>
+
+  <div style="margin-bottom: 35px;margin-top: 15px;" *ngIf="sendTransaction && accounts?.length > 1">
+    <span >For the above selected account you have already made tranfers to below names. If you want to transfer again to them please select one  
+     and enter amount to make payment.</span>
+     <br/>
+     <span style="vertical-align: middle;">OR</span>
+     <br/>
+     <span>You can make transfers by adding accounts details of the receiver.</span>
+     <br />
+     <br />
+     <span>At any time, if you decide not to proceed with the transfers to the selected account or the account you manually entered, you can click on 'Cancel.'</span>
+  </div>
+
+  <div style="margin-bottom: 35px;margin-top: 15px;" *ngIf="sendTransaction && accounts?.length == 1">
+    <span >You have already made tranfers to below names from your account. If you want to transfer again to them please select one and enter amount to make payment.</span>
+    <br/>
+    <span style="vertical-align: middle;">OR</span>
+    <br/>
+    <span>You can make transfers by adding accounts details of the receiver.</span>
+    <br />
+    <br />
+    <span>At any time, if you decide not to proceed with the transfers to the selected account or the account you manually entered, you can click on 'Cancel.'</span>
+  </div>
+
+  <div *ngIf="sendTransaction" style="margin: 25px;">
+    <label style="margin-right: 25px;" for="fontSizeSelect">Select Receiver Account:</label>
+    <p-dropdown id="fontSizeSelect" [options]="transferOptions" placeholder="Select Receiver Account" [(ngModel)]="selectedTransferAccount" 
+    optionLabel="label" optionValue="value" (onChange)="setSelectedTransfer()" 
+    ></p-dropdown>
+  </div>
+<hr/>
+<div style="margin: 25px;"  *ngIf="accounts?.length > 0">
+    <form novalidate [formGroup]="transferForm">
+        <p-message *ngIf="error" severity="error" [text]="message" [escape]="true"></p-message>
+    
+        <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;">
+          <label style="margin-right: 25px;">Receiver Name: </label>
+          <input type="text" [readonly]="selectedTransferAccount > 0" 
+          [ngStyle]="{'opacity': selectedTransferAccount > 0 ? '0.5' :  null }"
+          [(ngModel)]="transfer.receiverName" pInputText formControlName="receiverName"
+          placeholder="Receiver Name" />      
+        <span class="help-block" *ngIf="(transferForm.get('receiverName').touched ||
+        transferForm.get('receiverName').dirty) &&
+        transferForm.get('receiverName').errors">
+        <span *ngIf="transferForm.get('receiverName').errors">
+          Please enter valid receiver name.      </span>         
+      </span>
+        </div>
+        <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;">
+          <label  style="margin-right: 25px;">
+            Select a way to transfer funds:
+          </label>          
+          <p-dropdown id="fontSizeSelect" [options]="payWayOptions" placeholder="Select" [(ngModel)]="selectedPay" 
+          [disabled]="selectedTransferAccount > 0"
+          optionLabel="label" optionValue="value" (onChange)="hideShowPay()" formControlName="selectPaymentWay"
+          ></p-dropdown>  
+          <span class="help-block" *ngIf="(transferForm.get('selectPaymentWay').touched ||
+          transferForm.get('selectPaymentWay').dirty) &&
+          transferForm.get('selectPaymentWay').errors">
+          <span *ngIf="transferForm.get('selectPaymentWay').errors">
+            Please select how you want to make transfer.
+          </span>         
+        </span>  
+          </div>
+          <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;" *ngIf="showPhoneNumber">
+            <label style="margin-right: 25px;">Cell Phone Number: </label>
+    
+                <p-inputMask mask="999999999" [(ngModel)]="transfer.cellPhone" 
+                 placeholder="999999999" formControlName="cellPhone"></p-inputMask>
+    
+          <span class="help-block" *ngIf="(transferForm.get('cellPhone').touched ||
+          transferForm.get('cellPhone').dirty) &&
+          transferForm.get('cellPhone').errors">
+          <span *ngIf="transferForm.get('cellPhone').errors">
+            Cell phone is a mandatory field.
+          </span>         
+        </span>
+          </div>  
+        <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;" *ngIf="showAccounts">
+          <label style="margin-right: 25px;">Receiver Account Number: </label>
+          <p-inputMask mask="999999999" [(ngModel)]="transfer.receiverAccountNumber" [disabled]="selectedTransferAccount > 0"
+          placeholder="999999999" formControlName="receiverAccountNumber"
+          [ngStyle]="{'opacity': selectedTransferAccount > 0 ? '0.5' :  null, 'pointer-events': selectedTransferAccount > 0 ? 'none' :  'all'  }"
+          ></p-inputMask>
+             <span class="help-block" *ngIf="(transferForm.get('receiverAccountNumber').touched ||
+             transferForm.get('receiverAccountNumber').dirty) &&
+             transferForm.get('receiverAccountNumber').errors">
+             <span *ngIf="transferForm.get('receiverAccountNumber').errors">
+                Account Number should be 9 digits in length. Please verify again.          
+            </span>         
+           </span>
+          </div>
+          <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;" *ngIf="showAccounts">
+            <label style="margin-right: 25px;">Receiver Bank State Branch Number: </label>
+    
+                <p-inputMask mask="999-999" [(ngModel)]="transfer.bsbNumber" [disabled]="selectedTransferAccount > 0"
+                  [ngStyle]="{'opacity': selectedTransferAccount > 0 ? '0.5' :  null, 'pointer-events': selectedTransferAccount > 0 ? 'none' :  'all'  }"
+                  placeholder="999-999" formControlName="bsb"></p-inputMask>
+    
+          <span class="help-block" *ngIf="(transferForm.get('bsb').touched ||
+          transferForm.get('bsb').dirty) &&
+          transferForm.get('bsb').errors">
+          <span *ngIf="transferForm.get('bsb').errors">
+            Bank State Branch is a mandatory field.
+          </span>         
+        </span>
+          </div>  
+          <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;">
+            <label style="margin-right: 25px;">Amount: </label>
+            <p-inputNumber [(ngModel)]="transfer.amount" mode="decimal" [minFractionDigits]="2" placeholder="Amount"
+             [maxFractionDigits]="2" formControlName="amount"></p-inputNumber>
+            <span class="help-block" *ngIf="(transferForm.get('amount').touched ||
+            transferForm.get('amount').dirty) &&
+            transferForm.get('amount').errors">
+            <span *ngIf="transferForm.get('amount').errors">
+              Amount is a mandatory field.
+            </span>         
+          </span>
+          </div>  
+      </form>
+
+    <div class="button-container">
+        <button   mat-raised-button style="background-color: rgba(218, 17, 17, 0.622);
+        margin-top: 15px;" (click)="send()">Send</button>
+        <button mat-raised-button style="background-color: white;margin-left: 15px;
+               margin-top: 15px;" (click)="cancelTransfer()">Cancel</button>
+      </div>
+</div>
+
+</div>

@@ -1,0 +1,76 @@
+
+Use [bankingsystem]
+CREATE TABLE  Users(
+    UserId int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	UserIdentifier uniqueidentifier Not null,
+	Name	nvarchar(200) NOT NULL,	
+	CellPhone int not null,
+		Surname	nvarchar(200) NOT NULL,	
+	Email	nvarchar(200) NOT NULL,	
+	Password	nvarchar(200) NOT NULL,	
+
+CreatedAt datetime2(7) NOT NULL,
+UpdatedAt datetime2(7) NOT NULL
+);
+
+Use [bankingsystem]
+  CREATE TABLE  Accounts(
+    AccountId int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	AccountNumber int not null,
+	CurrentBalance decimal(20,3) not null default 100000,
+	UserIdentifier uniqueidentifier null,
+	AccountType int not null default 0,
+	BSBNumber nvarchar(200) not null,
+	AccountHolderName nvarchar(200) not null,
+	CreatedAt datetime2(7) NOT NULL,
+UpdatedAt datetime2(7) NOT NULL
+);
+
+Use [bankingsystem]
+insert into Accounts values (789456123, 100000, null, 0, 748596, 'Patel', GETDATE(), getdate())
+insert into Accounts values (859674123, 100000, null, 0, 748594, 'Moses', GETDATE(), getdate())
+insert into Accounts values (741854785, 100000, null, 0, 547859, 'Dmello', GETDATE(), getdate())
+insert into Accounts values (748597845, 100000, null, 1, 142536, 'Bose', GETDATE(), getdate())
+insert into Accounts values (748515235, 100000, null, 1, 859674, 'Xavier', GETDATE(), getdate())
+insert into Accounts values (859632146, 100000, null, 1, 256413, 'Dcosta', GETDATE(), getdate())
+insert into Accounts values (789456748, 100000, null, 0, 369854, 'Jonas', GETDATE(), getdate())
+insert into Accounts values (369852145, 100000, null, 1, 789456, 'Patt', GETDATE(), getdate())
+insert into Accounts values (145263789, 100000, null, 0, 524163, 'Blunt', GETDATE(), getdate())
+insert into Accounts values (965874123, 100000, null, 1, 456123, 'Potter', GETDATE(), getdate())
+
+Use [bankingsystem]
+ CREATE TABLE  PaymentMethod(
+    PaymentMethodId int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	PaymentMethodType Nvarchar(20) 
+);
+
+Use [bankingsystem]
+Insert into PaymentMethod values ('Debit Card');
+Insert into PaymentMethod values ('Credit Card');
+Insert into PaymentMethod values ('Internet Banking');
+Insert into PaymentMethod values ('Deposits');
+Insert into PaymentMethod values ('Withdrawal');
+
+Use [bankingsystem]
+ CREATE TABLE  Transactions(
+    TransactionId int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	SenderAccountId int  null,
+	ReceiverAccountId int  null,
+	TransactionDate datetime2(7) NOT NULL,
+	Amount  decimal(20,3) NOT NULL,
+	CurrentBalance  decimal(20,3) NOT NULL,
+	PaymentMethodId int not null,
+	AccountId int not null,
+	CreatedAt datetime2(7) NOT NULL,
+UpdatedAt datetime2(7) NOT NULL
+)
+
+Use [bankingsystem]
+  CREATE TABLE  Settings(
+    SettingsId int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	UserIdentifier uniqueidentifier not null,
+	FontSize nvarchar(200) null,
+	Contrast nvarchar(200)  null,
+	CreatedAt datetime2(7) NOT NULL,
+UpdatedAt datetime2(7) NOT NULL
+);

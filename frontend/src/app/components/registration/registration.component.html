@@ -1,0 +1,106 @@
+<p-blockUI [blocked]="isLoading">
+  <i class="pi pi-spin pi-spinner"
+    style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+</p-blockUI>
+
+
+<mat-card class="signup-box signup-box_mob" layout='row'>
+  <!-- <img class="logo-signup" src="../../assets/images/bank.png" alt=""> -->
+  <!-- <mat-card-title class="logo-name">E-bank</mat-card-title> -->
+  <p></p>
+  <mat-card-title class="registration-title">Create your E-Bank Online Account</mat-card-title>
+  <span class="registered-link">Already registered? <a  routerLink="/login">Log in</a></span>
+  <mat-card-content>
+    <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
+      <p>
+        <mat-form-field>
+          <input matInput ngModel #nameTextInput="ngModel" type="text" name="name" placeholder="Name" required
+            minlength="3">
+          <mat-error *ngIf="nameTextInput.invalid">
+            <ng-container *ngIf="nameTextInput.hasError('required')">Please enter name</ng-container>
+            <ng-container *ngIf="nameTextInput.hasError('minlength')">Name must be at least 3 characters</ng-container>
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <input matInput ngModel #surnameTextInput="ngModel" type="text" name="surname" placeholder="Surname" required
+            minlength="3">
+          <mat-error *ngIf="surnameTextInput.invalid">
+            <ng-container *ngIf="surnameTextInput.hasError('required')">Please enter surname</ng-container>
+            <ng-container *ngIf="surnameTextInput.hasError('minlength')">Surname must be at least 3 characters</ng-container>
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <input matInput ngModel #mobileTextInput="ngModel"  name="mobile" placeholder="Cell Phone" required
+            maxlength="9" minlength="9"  type="text" pattern="\d*" >
+          <mat-error *ngIf="mobileTextInput.invalid">
+            <ng-container *ngIf="mobileTextInput.hasError('required')">Please enter cell phone number</ng-container>
+            <ng-container *ngIf="mobileTextInput.hasError('pattern') || mobileTextInput.hasError('maxlength') || mobileTextInput.hasError('minlength')">Please check your entry and try again. Cell Phone must have exacly 9 digits.</ng-container>
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <div class="input-with-icon">
+          <input matInput ngModel #emailInput="ngModel" type="email" name="email" placeholder="E-mail" required email>
+          </div>
+          <mat-error *ngIf="emailInput.invalid">The email address you entered is invalid. Please enter valid e-mail</mat-error>
+        </mat-form-field>
+        <span class="help-text">This will be your E-bank online login and will be used to inform you via email about our programs, benefits, events and more. You can change your communication preferences at any time.</span>
+      </p>
+      <p>
+        <mat-form-field class="password_box">
+          <div class="input-with-icon">
+            <input
+              matInput
+              ngModel
+              #passwordInput="ngModel"
+              type="{{ hidePassword ? 'password' : 'text' }}"
+              name="password"
+              placeholder="Password"
+              required
+              minlength="8" 
+              maxlength="64" 
+            />
+              <button style="margin-left: 2px;" (click)="togglePasswordVisibility()"  pButton pRipple type="button"  class="p-button-rounded p-button-info p-button-text ">{{hidePassword ? 'Show' : 'Hide'}}</button>  
+            </div>
+          <mat-error *ngIf="passwordInput.invalid">
+            <ng-container *ngIf="passwordInput.hasError('required')">Please enter a password</ng-container>
+            <ng-container *ngIf="passwordInput.hasError('minlength')">The password you entered is not secure. Tap/click the question mark icon for secure password examples.</ng-container>
+            <ng-container *ngIf="passwordInput.hasError('maxlength')">Password cannot exceed 64 characters</ng-container>
+          </mat-error>
+        </mat-form-field>
+        <span class="help-text"> 8-64 characters in length. Enter a phrase you will remember.
+        </span>
+        <button pButton pRipple type="button" icon="pi pi-question-circle" (mouseover)="op.toggle($event)"
+        (mouseleave)="op.toggle($event)" (click)="op.toggle($event)"
+      class="p-button-rounded p-button-help p-button-text overlay-icon"></button>
+      </p>
+      <div>
+        <mat-checkbox ngModel #termsCheckbox="ngModel" [checked]="true" required (change)="checkCheckboxSelected($event)">I agree to the Terms and Conditions</mat-checkbox>
+        <mat-error *ngIf="uncheckedTerms">Please accept the E-Bank Terms and Conditions.</mat-error>
+      </div>
+      <div class="button-container">
+        <button mat-raised-button style="background-color: rgba(218, 17, 17, 0.622);
+        margin-top: 15px;" type="submit" *ngIf="!isLoading">Register</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '400px'}">
+  <ng-template pTemplate>
+   <span style="font-size: 20px;"><b>How to create a secure password</b> </span>
+<br/>
+    <p style="margin-top: 10px;">Using a phrase as your password makes it easier to remember and harder to crack. Avoid using repeating or sequential characters like 1234, 1111, abcd, aaaa.</p>
+
+   <p style="margin-top: 5px;"> <i class="pi pi-check-circle" style="color:green;border-radius: 50%;"></i>
+    My dog's name is Champ (Takes a long time to crack)</p>
+
+<p><i class="pi pi-times-circle" style="color:red;border-radius: 50%;"></i> markChamp (Can be cracked very quickly)</p>
+<p><i class="pi pi-times-circle" style="color:red;border-radius: 50%;"></i> markChamp1234 (Can be cracked very quickly) </p> 
+</ng-template>
+</p-overlayPanel>
