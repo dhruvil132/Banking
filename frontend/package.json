@@ -43,6 +43,7 @@
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~5.0.2"
   },"peerDependencies": {
-    "primeng": "^15.0.0"
+    "primeng": "^15.0.0",
+    "@angular/common": "^15.0.0"
   }
 }
