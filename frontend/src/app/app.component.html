@@ -15,18 +15,18 @@
   <p-dialog header="Chat with me" [(visible)]="showChatbot" 
   [style]="{ 'width': '400px',  'top': '50px',
   'position': 'fixed', 'bottom': '20px', 'right': '50px', 'z-index': '1000' }">
-    <div class="chat-container" #chatContainer>
+    <div class="chat-container" style="font-size: 20px;" #chatContainer>
       <div  class="chat-message">
         <div class="bot-message">
           How can I help you today? <br> 
           Are you finding difficulties in <br>
-          1. <a (click)="sendMessage('Adding an account')" class="point">Adding an account</a> <br>
-    2. <a (click)="sendMessage('Downloading bank statements')" class="point">Downloading bank statements</a> <br>
-    3. <a (click)="sendMessage('Changing settings')" class="point">Changing settings</a> <br>
-    4. <a (click)="sendMessage('Changing Password')" class="point">Changing Password</a> <br>
-    5. <a (click)="sendMessage('Forgot your password')" class="point">Forgot your password</a> <br>
-    6. <a (click)="sendMessage('Transfer funds')" class="point">Transfer funds</a> <br>
-    7. <a (click)="sendMessage('Bill payments')" class="point">Bill payments</a> <br>
+           <a (click)="sendMessage('Adding an account')" class="point">Adding an account</a> <br>
+     <a (click)="sendMessage('Downloading bank statements')" class="point">Downloading bank statements</a> <br>
+     <a (click)="sendMessage('Changing settings')" class="point">Changing settings</a> <br>
+     <a (click)="sendMessage('Changing Password')" class="point">Changing Password</a> <br>
+   <a (click)="sendMessage('Forgot your password')" class="point">Forgot your password</a> <br>
+     <a (click)="sendMessage('Transfer funds')" class="point">Transfer funds</a> <br>
+     <a (click)="sendMessage('Bill payments')" class="point">Bill payments</a> <br>
         </div>
       </div>
       <div *ngFor="let message of chatMessages" class="chat-message" >
