@@ -42,9 +42,9 @@
 
 <div class="button-container" *ngIf="!showForm">
     <button  *ngIf="noAccountFound" mat-raised-button style="background-color: rgba(218, 17, 17, 0.622);
-    margin-top: 15px;" (click)="showForm = true;">Add Account</button>
+    margin-top: 15px;" (click)="addNewAccount()">Add Account</button>
     <button  *ngIf="!noAccountFound" mat-raised-button style="background-color: rgba(218, 17, 17, 0.622);
-       margin-top: 15px;" (click)="showForm = true;">Add Another Account</button>
+       margin-top: 15px;" (click)="addNewAccount()">Add Another Account</button>
   </div>
 </div>
 
@@ -68,6 +68,7 @@
     <div class="form-group form-input-margins" style="width: 100%;min-width: 400px;">
       <label style="margin-right: 25px;">Account Number: </label>
       <p-inputMask mask="999999999" [(ngModel)]="accountDetails.accountNumber" 
+      [ngStyle]="{'opacity': showForm ? '0.5' :  null, 'pointer-events':showForm ? 'none' :  'all'  }"
       placeholder="999999999" formControlName="accountNumber"></p-inputMask>
          <span class="help-block" *ngIf="(accountAddForm.get('accountNumber').touched ||
          accountAddForm.get('accountNumber').dirty) &&

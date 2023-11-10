@@ -56,7 +56,8 @@ namespace api.Controllers
 				// Create a Random object
 				Random random = new Random();
 				// Generate a random number between 50,000 and 100,000
-				account.CurrentBalance = random.Next(50000, 100001);
+			//	account.CurrentBalance = random.Next(50000, 100001);
+			account.CurrentBalance = 0;
 				Account exitingAccount = await _accountRepository.GetAccountByAccountNumber(account.AccountNumber);
 				if (exitingAccount == null)
 				{
@@ -66,129 +67,129 @@ namespace api.Controllers
 				{
 					return UnprocessableEntity("Account with this account number already exists");
 				}
-				List<Transaction> transactions = new List<Transaction>();
-				List<int> numbers = new List<int>();
-				for (int i = 0; i < 10; i++)
-				{
-					numbers.Add(i);
-				}
+				//List<Transaction> transactions = new List<Transaction>();
+				//List<int> numbers = new List<int>();
+				//for (int i = 0; i < 10; i++)
+				//{
+				//	numbers.Add(i);
+				//}
 
-				// Shuffle the list using Fisher-Yates shuffle algorithm
-				int n = numbers.Count;
-				for (int i = n - 1; i > 0; i--)
-				{
-					int j = random.Next(0, i + 1);
-					int temp = numbers[i];
-					numbers[i] = numbers[j];
-					numbers[j] = temp;
-				}
-				DateTime date = new DateTime(2022, 01, 01);
-				foreach (int i in numbers)
-				{
-					int amount = 5000;
-					decimal balance = account.CurrentBalance;
-					int sender = 1; int receiver = 2;
-					int paymentType = 1;
-					if (i ==0)
-					{
-						amount = amount + 15;
-						balance = balance + amount;
-						receiver = account.AccountId;
-						sender = 1;
-						paymentType = 1;
-					}
+				//// Shuffle the list using Fisher-Yates shuffle algorithm
+				//int n = numbers.Count;
+				//for (int i = n - 1; i > 0; i--)
+				//{
+				//	int j = random.Next(0, i + 1);
+				//	int temp = numbers[i];
+				//	numbers[i] = numbers[j];
+				//	numbers[j] = temp;
+				//}
+				//DateTime date = new DateTime(2022, 01, 01);
+				//foreach (int i in numbers)
+				//{
+				//	int amount = 5000;
+				//	decimal balance = account.CurrentBalance;
+				//	int sender = 1; int receiver = 2;
+				//	int paymentType = 1;
+				//	if (i ==0)
+				//	{
+				//		amount = amount + 15;
+				//		balance = balance + amount;
+				//		receiver = account.AccountId;
+				//		sender = 1;
+				//		paymentType = 1;
+				//	}
 
-					if (i == 1)
-					{
-						amount = amount - 5;
-						balance = balance - amount;
-						sender = account.AccountId;
-						receiver = 2;
-						paymentType = 1;
+				//	if (i == 1)
+				//	{
+				//		amount = amount - 5;
+				//		balance = balance - amount;
+				//		sender = account.AccountId;
+				//		receiver = 2;
+				//		paymentType = 1;
 
-					}
+				//	}
 
-					if (i == 2)
-					{
-						amount = amount + 50;
-						balance = balance + amount;
-						receiver = account.AccountId;
-						sender = 3;
-						paymentType = 2;
-					}
+				//	if (i == 2)
+				//	{
+				//		amount = amount + 50;
+				//		balance = balance + amount;
+				//		receiver = account.AccountId;
+				//		sender = 3;
+				//		paymentType = 2;
+				//	}
 
-					if (i == 3)
-					{
-						amount = amount + 100;
-						balance = balance + amount;
-						receiver = account.AccountId;
-						sender = 4;
-						paymentType = 1;
-					}
+				//	if (i == 3)
+				//	{
+				//		amount = amount + 100;
+				//		balance = balance + amount;
+				//		receiver = account.AccountId;
+				//		sender = 4;
+				//		paymentType = 1;
+				//	}
 
-					if (i == 4)
-					{
-						amount = amount - 15;
-						balance = balance - amount;
-						sender = account.AccountId;
-						receiver = 5;
-						paymentType = 1;
-					}
-					if (i == 5)
-					{
-						amount = amount + 150;
-						balance = balance + amount;
-						receiver = account.AccountId;
-						sender = 6;
-						paymentType = 1;
-					}
-					if (i == 6)
-					{
-						amount = amount - 100;
-						balance = balance - amount;
-						sender = account.AccountId;
-						receiver = 5;
-						paymentType = 2;
-					}
-					if (i == 7)
-					{
-						amount = amount - 50;
-						balance = balance - amount;
-						sender = account.AccountId;
-						receiver = 4;
-						paymentType = 1;
-					}
-					if (i == 8)
-					{
-						amount = amount + 500;
-						receiver = account.AccountId;
-						balance = balance + amount;
-						sender = 4;
-						paymentType = 2;
-					}
-					if (i == 9)
-					{
-						amount = amount - 1000;
-						balance = balance - amount;
-						sender = account.AccountId;
-						receiver = 3;
-						paymentType = 1;
-					}
-					int randomDays = random.Next(1, 60);
-					date = date.AddDays(randomDays);
-					Transaction transaction = new Transaction();
-					transaction.Amount = amount;
-					transaction.CurrentBalance = balance;
-					transaction.SenderAccountId = sender;
-					transaction.AccountId = account.AccountId;
-					transaction.ReceiverAccountId = receiver;
-					transaction.PaymentMethodId = paymentType;
-					transaction.TransactionDate = date;
-					await _accountRepository.CreateTransaction(transaction);
-					transactions.Add(transaction);
-				}
-				account.CurrentBalance = transactions.Last().CurrentBalance;
-				account = await _accountRepository.UpdateAccount(account);
+				//	if (i == 4)
+				//	{
+				//		amount = amount - 15;
+				//		balance = balance - amount;
+				//		sender = account.AccountId;
+				//		receiver = 5;
+				//		paymentType = 1;
+				//	}
+				//	if (i == 5)
+				//	{
+				//		amount = amount + 150;
+				//		balance = balance + amount;
+				//		receiver = account.AccountId;
+				//		sender = 6;
+				//		paymentType = 1;
+				//	}
+				//	if (i == 6)
+				//	{
+				//		amount = amount - 100;
+				//		balance = balance - amount;
+				//		sender = account.AccountId;
+				//		receiver = 5;
+				//		paymentType = 2;
+				//	}
+				//	if (i == 7)
+				//	{
+				//		amount = amount - 50;
+				//		balance = balance - amount;
+				//		sender = account.AccountId;
+				//		receiver = 4;
+				//		paymentType = 1;
+				//	}
+				//	if (i == 8)
+				//	{
+				//		amount = amount + 500;
+				//		receiver = account.AccountId;
+				//		balance = balance + amount;
+				//		sender = 4;
+				//		paymentType = 2;
+				//	}
+				//	if (i == 9)
+				//	{
+				//		amount = amount - 1000;
+				//		balance = balance - amount;
+				//		sender = account.AccountId;
+				//		receiver = 3;
+				//		paymentType = 1;
+				//	}
+				//	int randomDays = random.Next(1, 60);
+				//	date = date.AddDays(randomDays);
+				//	Transaction transaction = new Transaction();
+				//	transaction.Amount = amount;
+				//	transaction.CurrentBalance = balance;
+				//	transaction.SenderAccountId = sender;
+				//	transaction.AccountId = account.AccountId;
+				//	transaction.ReceiverAccountId = receiver;
+				//	transaction.PaymentMethodId = paymentType;
+				//	transaction.TransactionDate = date;
+				//	await _accountRepository.CreateTransaction(transaction);
+				//	transactions.Add(transaction);
+				//}
+				//account.CurrentBalance = transactions.Last().CurrentBalance;
+				//account = await _accountRepository.UpdateAccount(account);
 				return new JsonResult(account);
 
 			}

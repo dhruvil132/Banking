@@ -178,5 +178,13 @@ fillAccountType() {
 getAccountType(type: number){
   return AccountTypeOption.get(type);
  }
-
+addNewAccount(){
+  this.accountDetails.accountHolderName = this.accounts[0].accountHolderName;
+  this.accountDetails.accountNumber =this.generateRandom();
+  this.showForm = true;
+}
+generateRandom(){
+  const randomNumber = Math.floor(Math.random() * ((999999999) - 100000000) + 1)
+  return randomNumber;
+}
 }

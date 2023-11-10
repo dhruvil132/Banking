@@ -77,7 +77,7 @@ export class AppComponent {
       else if(inputText.toLowerCase().trim().includes('bill payments') || inputText.toLowerCase().trim().includes('bills') || inputText.toLowerCase().trim().includes('water bill')){
         outputText = 'Certainly i will help you pay your bill of your choice. Go to pay bills menu, select the account you want to pay your bill with and then select the required bill you want to pay. Now enter the required amount and click on Make Payment. Thats it '        
       }
-      if(inputText.toLowerCase().trim().includes('forgot your password') || inputText.toLowerCase().trim().includes('reset') || inputText.toLowerCase().trim().includes('reset password')){
+      else if(inputText.toLowerCase().trim().includes('forgot your password') || inputText.toLowerCase().trim().includes('reset') || inputText.toLowerCase().trim().includes('reset password')){
         outputText = 'Certainly i will help you change your password if you dont remember it. Go to forgot your password. Enter your email id which you have to create the account.'        
       } 
       else{
